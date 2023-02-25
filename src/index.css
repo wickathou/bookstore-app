@@ -34,6 +34,6 @@
   }
 
   button {
-    @apply bg-blue-500 px-8 pt-2 pb-1.5 rounded-sm text-white font-roboto-slab text-sm;
+    @apply bg-blue-500 px-8 pt-2 pb-1.5 rounded-sm text-white font-roboto-slab text-sm !important;
   }
 }

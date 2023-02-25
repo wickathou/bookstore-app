@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "gh-pages -d dist",
     "css-linter": "npx stylelint \"**/*.{css,scss}\"",
     "css-linter-fix": "npx stylelint \"**/*.{css,scss}\" --fix",
     "js-linter": "npx eslint \"**/*.{js,jsx}\"",
