@@ -1,19 +1,45 @@
 {
   "name": "template-vite-react-tailwind-v3",
   "version": "0.0.0",
+  "homepage": "https://wickathou.github.io/bookstore-app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "css-linter": "npx stylelint \"**/*.{css,scss}\"",
+    "css-linter-fix": "npx stylelint \"**/*.{css,scss}\" --fix",
+    "js-linter": "npx eslint \"**/*.{js,jsx}\"",
+    "js-linter-fix": "npx eslint \"**/*.{js,jsx}\" --fix"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "chart.js": "^4.2.1",
+    "gh-pages": "^5.0.0",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-syntax-jsx": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
     "@vitejs/plugin-react": "^1.0.7",
-    "prettier": "^2.5.1",
-    "prettier-plugin-tailwindcss": "^0.1.5",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^21.0.0",
+    "stylelint-csstree-validator": "^1.9.0",
+    "stylelint-scss": "^3.21.0",
     "vitawind": "^2.2.4",
     "vite": "^2.7.2"
   }
