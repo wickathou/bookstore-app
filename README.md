@@ -53,7 +53,7 @@ Clone this repository to your desired folder:
 ### Usage
 
 To run the project, use the command
-`npm run start`
+`npm run dev`
 
 To run the tests, use the command
 `npm run test`
@@ -68,14 +68,13 @@ To run the tests, use the command
 
 ## ✅ Current Features <a name="current-features"></a>
 
-- [Done] **[Visual interface for calculator]**
-- [Done] **[Capability to perform arithmetic operations]**
-- [Done] **[Separate webapp views]**
-- [Done] **[Unit test with Jest and Testing Library]**
+- [Done] **[Visual interface for book lists]**
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-- [ ] **[Improve visual design]**
+- [ ] **[Add more routes]**
+- [ ] **[Add functionality]**
+- [ ] **[Add tests for React and logic]**
 
 ## 🤝 Contributing <a name="contributing"></a>
 
