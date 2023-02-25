@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,32 +8,32 @@
   html {
     font-family: 'Monserrat', sans-serif;
   }
-  
+
   body {
     @apply bg-slate-100;
   }
 
   h1 {
-    @apply text-3xl font-black text-blue-500
+    @apply text-3xl font-black text-blue-500;
   }
 
   h2 {
-    @apply text-2xl font-roboto-slab font-bold
+    @apply text-2xl font-roboto-slab font-bold;
   }
 
   h3 {
-    @apply font-bold text-slate-500
+    @apply font-bold text-slate-500;
   }
 
   h5 {
-    @apply font-light text-blue-500
+    @apply font-light text-blue-500;
   }
 
   h6 {
-    @apply text-3xl
+    @apply text-3xl;
   }
 
   button {
-    @apply bg-blue-500 px-8 pt-2 pb-1.5 rounded-sm text-white font-roboto-slab text-sm
+    @apply bg-blue-500 px-8 pt-2 pb-1.5 rounded-sm text-white font-roboto-slab text-sm;
   }
 }

@@ -1,32 +1,36 @@
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import PropTypes from 'prop-types';
+import {
+  Chart as ChartJS, ArcElement, Tooltip, Legend,
+} from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import colors from 'tailwindcss/colors';
-
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export 
+export
 
 const completionRate = (completion) => {
-
   const data = {
     labels: [],
     datasets: [
       {
-        data: [completion,(100-completion)],
+        data: [completion, (100 - completion)],
         cutout: '80%',
         backgroundColor: [
-          colors.blue[500],
-          colors.slate[300],
+          '#3b82f6',
+          '#cbd5e1',
         ],
       },
     ],
   };
 
-  return data
-}
+  return data;
+};
 
-export function Chart({data}) {
+export function Chart({ data }) {
   return <Doughnut data={completionRate(data)} />;
 }
+
+Chart.propTypes = {
+  data: PropTypes.number.isRequired,
+};
