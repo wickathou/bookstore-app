@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AddBook from './AddBook';
-import BookItem from './BookItem';
+import AddBook from '../components/AddBook';
+import BookItem from '../components/BookItem';
 
 function BookList({ bookItem }) {
   return (
