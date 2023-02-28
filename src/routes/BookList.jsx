@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AddBook from '../components/AddBook';
 import BookItem from '../components/BookItem';
+import { useSelector } from 'react-redux';
 
 function BookList({ bookItem }) {
+  const books = useSelector((store) => store.books)
+  console.log(books);
   return (
     <>
       <main className="flex justify-center">

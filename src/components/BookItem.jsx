@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 import { Chart } from './Chart';
 import {useDispatch} from 'react-redux';
-import {addBook, removeBook} from '../redux/books/booksSlice'
+import { removeBook} from '../redux/books/booksSlice'
+import { checkStatus } from '../redux/categories/categoriesSlice'
 
 function BookItem({ book }) {
   const dispatch = useDispatch()
@@ -11,14 +12,14 @@ function BookItem({ book }) {
     <li className="flex justify-between content-center p-8 bg-white rounded-md border border-slate-200">
       <div className="space-y-4">
         <div>
-          <h3>{book.category}</h3>
+          <h3 onClick={()=> dispatch(checkStatus())}>{book.category}</h3>
           <h2>{book.title}</h2>
           <h5>{book.author}</h5>
         </div>
         <div className="flex justify-between space-x-4">
           <h5>Comments</h5>
           <span>|</span>
-          <h5 onClick={()=>dispatch(removeBook())}>Remove</h5>
+          <h5 onClick={()=>dispatch(removeBook(book.id))}>Remove</h5>
           <span>|</span>
           <h5>Edit</h5>
         </div>
@@ -49,7 +50,7 @@ function BookItem({ book }) {
               {book.chapter}
             </p>
           </div>
-          <Button title="UPDATE PROGRESS" onDispatch={()=>dispatch(addBook())}/>
+          <Button title="UPDATE PROGRESS" />
         </div>
       </div>
     </li>
