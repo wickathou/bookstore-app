@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import BookList from './components/BookList';
+import BookList from './routes/BookList';
 import Home from './routes/Home';
 import Categories from './routes/Categories';
 import NotFound from './routes/NotFound';

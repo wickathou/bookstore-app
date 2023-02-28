@@ -1,21 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import Button from './Button';
 import { Chart } from './Chart';
+import { removeBook } from '../redux/books/booksSlice';
+import { checkStatus } from '../redux/categories/categoriesSlice';
 
 function BookItem({ book }) {
+  const dispatch = useDispatch();
   return (
     <li className="flex justify-between content-center p-8 bg-white rounded-md border border-slate-200">
       <div className="space-y-4">
         <div>
-          <h3>{book.category}</h3>
+          <button type="button" onClick={() => dispatch(checkStatus())}><h3 className="text-link">{book.category}</h3></button>
           <h2>{book.title}</h2>
           <h5>{book.author}</h5>
         </div>
         <div className="flex justify-between space-x-4">
           <h5>Comments</h5>
           <span>|</span>
-          <h5>Remove</h5>
+          <button type="button" href="#" onClick={() => dispatch(removeBook(book.id))}><h5 className="text-link">Remove</h5></button>
           <span>|</span>
           <h5>Edit</h5>
         </div>

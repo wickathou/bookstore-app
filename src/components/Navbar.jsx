@@ -10,8 +10,8 @@ function Navbar() {
         <div className="flex justify-between items-center space-x-8">
           <h1><Link to="/">Bookstore CMS</Link></h1>
           <ul className="flex justify-between items-center space-x-4">
-            <li><Link to="/books">Books</Link></li>
-            <li><Link to="/categories">Categories</Link></li>
+            <li className="text-link"><Link to="/books">Books</Link></li>
+            <li className="text-link"><Link to="/categories">Categories</Link></li>
           </ul>
         </div>
         <div className="flex justify-center items-center rounded-full border-slate-300 border w-10 h-10">
