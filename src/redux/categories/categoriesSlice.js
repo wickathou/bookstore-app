@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import {allBooks} from '../books/booksSlice';
 
 const initialState = {
   categories: [],
@@ -12,7 +10,6 @@ const categoriesSlice = createSlice({
   initialState,
   reducers: {
     checkStatus: (state) => {
-      console.log('status checked');
       const newState = { ...state };
       newState.categories = [...newState.categories, 'Status checked'];
       return newState;

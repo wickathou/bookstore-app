@@ -11,7 +11,7 @@ function Button({ title, onDispatch }) {
 
 Button.defaultProps = {
   title: '',
-}
+};
 
 Button.propTypes = {
   title: PropTypes.string,

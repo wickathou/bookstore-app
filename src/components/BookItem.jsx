@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Button from './Button';
 import { Chart } from './Chart';
 import { removeBook, filterBooks } from '../redux/books/booksSlice';
@@ -8,12 +8,11 @@ import { checkStatus } from '../redux/categories/categoriesSlice';
 
 function BookItem({ book }) {
   const dispatch = useDispatch();
-  const {bookList} = useSelector((store) => store.books)
   return (
     <li className="flex justify-between content-center p-8 bg-white rounded-md border border-slate-200">
       <div className="space-y-4">
         <div>
-          <div className='space-x-4'>
+          <div className="space-x-4">
             <button type="button" onClick={() => dispatch(filterBooks(book.category))}><h3 className="text-link">{book.category}</h3></button>
           </div>
           <h2>{book.title}</h2>
@@ -53,7 +52,7 @@ function BookItem({ book }) {
               {book.chapter}
             </p>
           </div>
-          <Button type="button" title="UPDATE PROGRESS" onDispatch={() => dispatch(checkStatus())}/>
+          <Button type="button" title="UPDATE PROGRESS" onDispatch={() => dispatch(checkStatus())} />
         </div>
       </div>
     </li>
@@ -73,7 +72,7 @@ BookItem.propTypes = {
     author: PropTypes.string.isRequired,
     completion: PropTypes.number.isRequired,
     chapter: PropTypes.string.isRequired,
-  }))
+  })),
 };
 
 export default BookItem;
