@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from './Button';
 import { Chart } from './Chart';
-import { removeBook } from '../redux/books/booksSlice';
-import { checkStatus } from '../redux/categories/categoriesSlice';
+import { removeBook,updateCompletion, filterBooks } from '../redux/books/booksSlice';
+import { checkStatus, filterByCountry } from '../redux/categories/categoriesSlice';
 
 function BookItem({ book }) {
   const dispatch = useDispatch();
+  const {bookList} = useSelector((store) => store.books)
   return (
     <li className="flex justify-between content-center p-8 bg-white rounded-md border border-slate-200">
       <div className="space-y-4">
         <div>
-          <button type="button" onClick={() => dispatch(checkStatus())}><h3 className="text-link">{book.category}</h3></button>
+          <div className='space-x-4'>
+            <button type="button" onClick={() => dispatch(filterBooks(book.category))}><h3 className="text-link">{book.category}</h3></button>
+          </div>
           <h2>{book.title}</h2>
           <h5>{book.author}</h5>
         </div>
@@ -50,7 +53,7 @@ function BookItem({ book }) {
               {book.chapter}
             </p>
           </div>
-          <Button title="UPDATE PROGRESS" />
+          <Button type="button" title="UPDATE PROGRESS" onDispatch={() => dispatch(updateCompletion())}/>
         </div>
       </div>
     </li>
@@ -62,14 +65,15 @@ BookItem.defaultProps = {
 };
 
 BookItem.propTypes = {
-  book: {
-    id: PropTypes.number.isRequired,
+  book: PropTypes.objectOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
+    country: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     completion: PropTypes.number.isRequired,
     chapter: PropTypes.string.isRequired,
-  },
+  }))
 };
 
 export default BookItem;
