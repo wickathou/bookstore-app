@@ -69,11 +69,12 @@ To run the tests, use the command
 ## ✅ Current Features <a name="current-features"></a>
 
 - [Done] **[Visual interface for book lists]**
+- [Done] **[Functionality to add new books, delete and filter]**
+- [Done] **[Add routes]**
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-- [ ] **[Add more routes]**
-- [ ] **[Add functionality]**
+- [ ] **[Add functionality for categories]**
 - [ ] **[Add tests for React and logic]**
 
 ## 🤝 Contributing <a name="contributing"></a>
