@@ -6,7 +6,6 @@ const initialState = {
     {
       "id": "item1",
       "title": "The Great Gatsby",
-      "country": "USA",
       "author": "John Smith",
       "category": "Fiction",
       "completion":0,
@@ -15,7 +14,6 @@ const initialState = {
     {
       "id": "item2",
       "title": "Anna Karenina",
-      "country": "Russia",
       "author": "Leo Tolstoy",
       "category": "Fiction",
       "completion":0,
@@ -24,7 +22,6 @@ const initialState = {
     {
       "id": "item3",
       "title": "The Selfish Gene",
-      "country": "USA",
       "author": "Richard Dawkins",
       "category": "Nonfiction",
       "completion":0,
@@ -58,9 +55,6 @@ const booksSlice = createSlice({
     removeBook: (state, action) => {
       const itemId = action.payload;
       return { ...state, bookList: state.bookList.filter((item) => item.id !== itemId) };
-    },
-    updateCompletion: (state, action) => {
-      console.log('test');
     },
     filterBooks: (state, {payload}) => {
       const filters = payload

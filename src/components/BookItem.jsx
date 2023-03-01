@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './Button';
 import { Chart } from './Chart';
-import { removeBook,updateCompletion, filterBooks } from '../redux/books/booksSlice';
-import { checkStatus, filterByCountry } from '../redux/categories/categoriesSlice';
+import { removeBook, filterBooks } from '../redux/books/booksSlice';
+import { checkStatus } from '../redux/categories/categoriesSlice';
 
 function BookItem({ book }) {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ function BookItem({ book }) {
               {book.chapter}
             </p>
           </div>
-          <Button type="button" title="UPDATE PROGRESS" onDispatch={() => dispatch(updateCompletion())}/>
+          <Button type="button" title="UPDATE PROGRESS" onDispatch={() => dispatch(checkStatus())}/>
         </div>
       </div>
     </li>

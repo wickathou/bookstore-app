@@ -14,17 +14,12 @@ const categoriesSlice = createSlice({
     checkStatus: (state) => {
       console.log('status checked');
       const newState = { ...state };
-      newState.categories = [...newState.categories, 'Under construction'];
+      newState.categories = [...newState.categories, 'Status checked'];
       return newState;
     },
-    filterByCountry: (state, {payload}) => {
-      // console.log({ ...state, filterList: state.bookList.filter((item) => item.country !== payload) });
-      console.log(payload);
-      // return { ...state, filterList: allBooks(state).filter((item) => item.country !== payload) };
-    }
   },
 });
 
-export const { checkStatus, filterByCountry } = categoriesSlice.actions;
+export const { checkStatus } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;
