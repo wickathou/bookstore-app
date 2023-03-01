@@ -13,7 +13,6 @@ const categoriesSlice = createSlice({
     checkStatus: (state) => {
       const newState = { ...state };
       newState.checked = true;
-      console.log(newState);
       return newState;
     },
   },

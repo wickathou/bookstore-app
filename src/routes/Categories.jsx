@@ -7,10 +7,10 @@ import { checkStatus } from '../redux/categories/categoriesSlice';
 
 function Categories() {
   const { checked } = useSelector((store) => store.categories);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <main className="flex justify-center items-center m-8">
-      <Button type="button" title={ checked? "STATUS CHECKED":"UPDATE PROGRESS"} onDispatch={() => dispatch(checkStatus())} />
+      <Button type="button" title={checked ? 'STATUS CHECKED' : 'UPDATE PROGRESS'} onDispatch={() => dispatch(checkStatus())} />
     </main>
   );
 }
