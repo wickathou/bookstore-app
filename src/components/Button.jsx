@@ -9,8 +9,12 @@ function Button({ title, onDispatch }) {
   );
 }
 
+Button.defaultProps = {
+  title: '',
+};
+
 Button.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   onDispatch: PropTypes.func.isRequired,
 };
 
