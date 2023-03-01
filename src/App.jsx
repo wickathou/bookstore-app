@@ -40,7 +40,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="books" element={<BookList books={filterApplied ? filterSet : bookList} filtered={filterApplied} />} />
-        <Route path="categories" element={<Categories />} />
+        <Route path="categories" element={<Categories/>} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

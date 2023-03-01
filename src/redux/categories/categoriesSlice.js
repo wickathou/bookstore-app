@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   categories: [],
   filterList: [],
+  checked: false,
 };
 
 const categoriesSlice = createSlice({
@@ -11,7 +12,8 @@ const categoriesSlice = createSlice({
   reducers: {
     checkStatus: (state) => {
       const newState = { ...state };
-      newState.categories = [...newState.categories, 'Status checked'];
+      newState.checked = true;
+      console.log(newState);
       return newState;
     },
   },
