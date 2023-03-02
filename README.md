@@ -71,6 +71,7 @@ To run the tests, use the command
 - [Done] **[Visual interface for book lists]**
 - [Done] **[Functionality to add new books, delete and filter]**
 - [Done] **[Add routes]**
+- [Done] **[Input validation for new book entries]**
 
 ## 🔭 Future Features <a name="future-features"></a>
 
