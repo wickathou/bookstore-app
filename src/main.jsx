@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import {addData, getData} from './redux/books/booksSlice';
+import {addData, delData, getData} from './redux/books/booksSlice';
 
-store.dispatch(addData({
-  'item_id': 'item22',
-  'title': 'random title',
-  'author': 'rando',
-  'category': 'somecat',
-}))
+// store.dispatch(addData({
+//   'item_id': 'item21',
+//   'title': 'random title',
+//   'author': 'rando',
+//   'category': 'somecat',
+// }))
+
+// store.dispatch(delData('item18'))
 store.dispatch(getData())
 
 import './index.css';

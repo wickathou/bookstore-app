@@ -7,8 +7,6 @@ const booksAPI = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/boo
 
 export const addData = createAsyncThunk('books/add', async (bookData) => {
   const {item_id, title, author, category} = bookData
-  console.log('Running thunk');
-  console.log([item_id, title, author,category]);
   try {
     const res = await fetch(booksAPI, {
       method: 'POST',
@@ -26,11 +24,27 @@ export const addData = createAsyncThunk('books/add', async (bookData) => {
       throw new Error('Server returned status code ' + res.status);
     }
     // const data = await res.json();
-    console.log('addData results');
-    console.log(res);
     return res;
   } catch (error) {
-    console.log('addData ERROR found');
+    throw error;
+  }
+})
+
+export const delData = createAsyncThunk('books/del', async (id) => {
+  console.log('Deleting record '+id);
+  try {
+    const res = await fetch(booksAPI+id, {
+      method: 'DELETE',
+    });
+    if (await !res.ok || (/Weird/).test(await res.text())) {
+      console.log('Error FOUND');
+      console.log(await res.text());
+      throw new Error('Server returned status code ' + res.status);
+    }
+    console.log('Deleted');
+    return res;
+  } catch (error) {
+    console.log('delData ERROR found');
     throw error;
   }
 })
@@ -40,42 +54,14 @@ export const getData = createAsyncThunk( 'books/get', async () => {
     console.log('data.result');
     const res = await fetch(booksAPI);
     const data = await res.json();
-    console.log('data');
-    console.log(data);
     return data;
   } catch (error) {
-    console.log('error');
     return error;
   }
 })
 
 const initialState = {
-  bookList: [
-    {
-      id: 'item1',
-      title: 'The Great Gatsby',
-      author: 'John Smith',
-      category: 'Fiction',
-      completion: 0,
-      chapter: '0',
-    },
-    {
-      id: 'item2',
-      title: 'Anna Karenina',
-      author: 'Leo Tolstoy',
-      category: 'Fiction',
-      completion: 0,
-      chapter: '0',
-    },
-    {
-      id: 'item3',
-      title: 'The Selfish Gene',
-      author: 'Richard Dawkins',
-      category: 'Nonfiction',
-      completion: 0,
-      chapter: '0',
-    },
-  ],
+  bookList: [],
   filterSettings: {
     filterApplied: false,
     filterSet: [],
@@ -89,19 +75,20 @@ const booksSlice = createSlice({
     addBook: (state, action) => {
       const { title, author, item_id, category } = action.payload;
       const newBook = {
-        id: item_id || uuidv4(),
+        item_id: item_id || uuidv4(),
         category: category || 'Uncategorized',
         title,
         author,
         completion: 0,
         chapter: '0',
       };
-      console.log(newBook);
+      // console.log(newBook);
       return { ...state, bookList: [...state.bookList, newBook] };
     },
     removeBook: (state, action) => {
       const itemId = action.payload;
-      return { ...state, bookList: state.bookList.filter((item) => item.id !== itemId) };
+      console.log(itemId);
+      return { ...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
     },
     filterBooks: (state, { payload }) => {
       const filters = payload;
@@ -125,22 +112,32 @@ const booksSlice = createSlice({
     builder
       .addCase(getData.pending, (state) => {
         // state.loading = true;
-        console.log('Pending');
       })
       .addCase(getData.fulfilled, (state, action) => {
         // state.books = action.payload;
         // state.loading = false;
         // state.error = null;
-        console.log('Fulfilled');
         const bookList = action.payload
-        console.log(bookList);
-
-        // return { ...state, bookList: [...state.bookList, action.payload] };
+        const bookArr = Object.entries(bookList)
+        console.log(bookArr);
+        const newBooks = bookArr.map((book)=> {
+          const item_id = book[0]
+          const {author, category, title} = book[1][0]
+          const bookObj = {
+            item_id,
+            author,
+            category,
+            title
+          }
+          let vare = booksSlice.reducer(state, booksSlice.actions.addBook(bookObj))
+          return vare.bookList[0] 
+        })
+        return { ...state, bookList: [...state.bookList, ...newBooks] }
       })
       .addCase(getData.rejected, (state, action) => {
         // state.loading = false;
         // state.error = action.error.message;
-        console.log('Rejected');
+        console.log(action.payload);
       })
 
       .addCase(addData.pending, (state) => {
@@ -151,7 +148,6 @@ const booksSlice = createSlice({
         // state.books = action.payload;
         // state.loading = false;
         // state.error = null;
-        console.log('Fulfilled - addData');
         const bookList = action
         console.log(bookList);
 
@@ -160,7 +156,25 @@ const booksSlice = createSlice({
       .addCase(addData.rejected, (state, action) => {
         // state.loading = false;
         // state.error = action.error.message;
-        console.log('Rejected - addData');
+        console.log(action);
+      })
+
+      .addCase(delData.pending, (state) => {
+        // state.loading = true;
+        console.log('del pending');
+      })
+      .addCase(delData.fulfilled, (state, action) => {
+        // state.books = action.payload;
+        // state.loading = false;
+        // state.error = null;
+        const bookList = action
+        console.log(bookList);
+
+        // return { ...state, bookList: [...state.bookList, action.payload] };
+      })
+      .addCase(delData.rejected, (state, action) => {
+        // state.loading = false;
+        // state.error = action.error.message;
         console.log(action);
       })
   }
