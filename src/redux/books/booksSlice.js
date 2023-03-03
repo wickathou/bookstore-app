@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-const booksAPI = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/VUqoXEBLxjrzkWMVNCqp/books/'
+const booksAPI = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/VUqoXEBLxjrzkWMVNCqp/books/';
 
-// Add category list and make input for them when creating new book entry 
+// Add category list and make input for them when creating new book entry
 
 export const addData = createAsyncThunk('books/add', async (bookData) => {
   console.log(bookData);
-  const {item_id, title, author, category} = bookData
+  const {
+    item_id, title, author, category,
+  } = bookData;
   try {
     const res = await fetch(booksAPI, {
       method: 'POST',
@@ -22,25 +24,26 @@ export const addData = createAsyncThunk('books/add', async (bookData) => {
       }),
     });
     if (await !res.ok) {
-      throw new Error('Server returned status code ' + res.status);
+      throw new Error(`Server returned status code ${res.status}`);
     }
     // const data = await res.json();
     return res;
   } catch (error) {
     throw error;
   }
-})
+});
 
 export const delData = createAsyncThunk('books/del', async (id) => {
-  console.log('Deleting record '+id);
+  console.log(`Deleting record ${id}`);
+  throw Error('All wrong')
   try {
-    const res = await fetch(booksAPI+id, {
+    const res = await fetch(booksAPI + id, {
       method: 'DELETE',
     });
     if (await !res.ok || (/Weird/).test(await res.text())) {
       console.log('Error FOUND');
       console.log(await res.text());
-      throw new Error('Server returned status code ' + res.status);
+      throw new Error(`Server returned status code ${res.status}`);
     }
     console.log('Deleted');
     return res;
@@ -48,9 +51,9 @@ export const delData = createAsyncThunk('books/del', async (id) => {
     console.log('delData ERROR found');
     throw error;
   }
-})
+});
 
-export const getData = createAsyncThunk( 'books/get', async () => {
+export const getData = createAsyncThunk('books/get', async () => {
   try {
     console.log('data.result');
     const res = await fetch(booksAPI);
@@ -59,7 +62,7 @@ export const getData = createAsyncThunk( 'books/get', async () => {
   } catch (error) {
     return error;
   }
-})
+});
 
 const initialState = {
   bookList: [],
@@ -67,10 +70,16 @@ const initialState = {
     filterApplied: false,
     filterSet: [],
   },
+  status: {
+    loading: false,
+    error: '',
+  },
 };
 
 const bookFormater = (element) => {
-  const { title, author, item_id, category } = element;
+  const {
+    title, author, item_id, category,
+  } = element;
   const newBook = {
     item_id: item_id || uuidv4(),
     category: category || 'Uncategorized',
@@ -80,20 +89,18 @@ const bookFormater = (element) => {
     chapter: '0',
   };
   console.log(newBook);
-  return newBook
-}
+  return newBook;
+};
 
 const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    addBook: (state, action) => {
-      return { ...state, bookList: [...state.bookList, bookFormater(action.payload)] };
-    },
+    addBook: (state, action) => ({ ...state, bookList: [...state.bookList, bookFormater(action.payload)] }),
     removeBook: (state, action) => {
       const itemId = action.payload;
       console.log(itemId);
-      return {...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
+      return { ...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
     },
     filterBooks: (state, { payload }) => {
       const filters = payload;
@@ -126,66 +133,56 @@ const booksSlice = createSlice({
         // state.books = action.payload;
         // state.loading = false;
         // state.error = null;
-        const bookList = action.payload
-        const bookArr = Object.entries(bookList)
+        const bookList = action.payload;
+        const bookArr = Object.entries(bookList);
         console.log(bookArr);
-        const newBooks = bookArr.map((book)=> {
-          const item_id = book[0]
-          const {author, category, title} = book[1][0]
+        const newBooks = bookArr.map((book) => {
+          const item_id = book[0];
+          const { author, category, title } = book[1][0];
           const bookObj = {
             item_id,
             author,
             category,
-            title
-          }
-          return bookFormater(bookObj) 
-        })
-        return { ...state, bookList: [...state.bookList, ...newBooks] }
+            title,
+          };
+          return bookFormater(bookObj);
+        });
+        return { ...state, bookList: [...state.bookList, ...newBooks] };
       })
       .addCase(getData.rejected, (state, action) => {
         // state.loading = false;
         // state.error = action.error.message;
-        console.log(action.payload);
       })
 
       .addCase(addData.pending, (state) => {
         // state.loading = true;
-        console.log('Pending - addData');
       })
       .addCase(addData.fulfilled, (state, action) => {
         // state.books = action.payload;
         // state.loading = false;
         // state.error = null;
-        const bookList = action
-        console.log(bookList);
+        const bookList = action;
 
         // return { ...state, bookList: [...state.bookList, action.payload] };
       })
       .addCase(addData.rejected, (state, action) => {
         // state.loading = false;
         // state.error = action.error.message;
-        console.log(action);
       })
 
       .addCase(delData.pending, (state) => {
-        // state.loading = true;
-        console.log('del pending');
+        return {...state, status: {...state.status, loading:true, error: ''}}
       })
       .addCase(delData.fulfilled, (state, action) => {
-        // state.books = action.payload;
-        // state.loading = false;
-        // state.error = null;
-        const bookList = action
-        console.log(bookList);
+        return {...state, status: {...state.status, loading:false, error: ''}}
 
-        // return { ...state, bookList: [...state.bookList, action.payload] };
       })
       .addCase(delData.rejected, (state, action) => {
-        // state.loading = false;
-        // state.error = action.error.message;
         console.log(action);
-      })
-  }
+        console.log('got reject');
+        return {...state, status: {...state.status, loading:false, error: action.error.message || 'Remove function has failed'}}
+      });
+  },
 });
 
 export const allBooks = (state) => state.books;
@@ -196,22 +193,20 @@ export const {
 
 export default booksSlice.reducer;
 
-export const myMiddleware = (store) => (next) => (action) => {
+export const asyncMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'books/removeBook':
-        store.dispatch(delData(action.payload))
-        // dispatch(delData(action.payload))
-        console.log('Book removed:', action.payload);
-      
+      store.dispatch(delData(action.payload));
+      // dispatch(delData(action.payload))
+
       break;
 
     case 'books/addBook':
-      store.dispatch(addData(bookFormater(action.payload)))
+      store.dispatch(addData(bookFormater(action.payload)));
       // dispatch(delData(action.payload))
-      console.log('Book added:', action.payload);
-    
-    break;
-  
+
+      break;
+
     default:
       break;
   }
