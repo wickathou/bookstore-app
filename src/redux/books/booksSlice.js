@@ -6,6 +6,7 @@ const booksAPI = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/boo
 // Add category list and make input for them when creating new book entry 
 
 export const addData = createAsyncThunk('books/add', async (bookData) => {
+  console.log(bookData);
   const {item_id, title, author, category} = bookData
   try {
     const res = await fetch(booksAPI, {
@@ -68,27 +69,31 @@ const initialState = {
   },
 };
 
+const bookFormater = (element) => {
+  const { title, author, item_id, category } = element;
+  const newBook = {
+    item_id: item_id || uuidv4(),
+    category: category || 'Uncategorized',
+    title,
+    author,
+    completion: 0,
+    chapter: '0',
+  };
+  console.log(newBook);
+  return newBook
+}
+
 const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
     addBook: (state, action) => {
-      const { title, author, item_id, category } = action.payload;
-      const newBook = {
-        item_id: item_id || uuidv4(),
-        category: category || 'Uncategorized',
-        title,
-        author,
-        completion: 0,
-        chapter: '0',
-      };
-      // console.log(newBook);
-      return { ...state, bookList: [...state.bookList, newBook] };
+      return { ...state, bookList: [...state.bookList, bookFormater(action.payload)] };
     },
     removeBook: (state, action) => {
       const itemId = action.payload;
       console.log(itemId);
-      return { ...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
+      return {...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
     },
     filterBooks: (state, { payload }) => {
       const filters = payload;
@@ -110,6 +115,10 @@ const booksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      .addCase('books/removeBook', (state) => {
+        console.log('runned');
+      })
       .addCase(getData.pending, (state) => {
         // state.loading = true;
       })
@@ -129,8 +138,7 @@ const booksSlice = createSlice({
             category,
             title
           }
-          let vare = booksSlice.reducer(state, booksSlice.actions.addBook(bookObj))
-          return vare.bookList[0] 
+          return bookFormater(bookObj) 
         })
         return { ...state, bookList: [...state.bookList, ...newBooks] }
       })
@@ -187,3 +195,26 @@ export const {
 } = booksSlice.actions;
 
 export default booksSlice.reducer;
+
+export const myMiddleware = (store) => (next) => (action) => {
+  switch (action.type) {
+    case 'books/removeBook':
+        store.dispatch(delData(action.payload))
+        // dispatch(delData(action.payload))
+        console.log('Book removed:', action.payload);
+      
+      break;
+
+    case 'books/addBook':
+      store.dispatch(addData(bookFormater(action.payload)))
+      // dispatch(delData(action.payload))
+      console.log('Book added:', action.payload);
+    
+    break;
+  
+    default:
+      break;
+  }
+
+  return next(action);
+};
