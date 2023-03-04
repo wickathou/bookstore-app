@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
 import AddBook from '../components/AddBook';
 import BookItem from '../components/BookItem';
 import Button from '../components/Button';
 import { clearFilters } from '../redux/books/booksSlice';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faXmark } from '@fortawesome/free-solid-svg-icons';
-
 
 function BookList({ books, filtered, status }) {
   const dispatch = useDispatch();
@@ -17,12 +16,21 @@ function BookList({ books, filtered, status }) {
   } else {
     content = <h3>Add your books!</h3>;
   }
+  let errorActive;
+  if (status.error === '') {
+    errorActive = false;
+  } else {
+    errorActive = true;
+  }
   return (
     <>
       <main className="flex flex-col items-center space-y-2">
         {filtered ? <Button title="Clear all filters" onDispatch={() => dispatch(clearFilters())} /> : ''}
-        {status.loading ? <div className='m-4 animate-spin'><FontAwesomeIcon icon={faSpinner} /></div> : ''}
-        <div className='space-x-4'>{status.error.trim() ? <FontAwesomeIcon icon={faXmark} /> : ''}<span>{status.error}</span></div>
+        {status.loading ? <div className="m-4 animate-spin"><FontAwesomeIcon icon={faSpinner} /></div> : ''}
+        <div className="space-x-4">
+          {errorActive ? <FontAwesomeIcon icon={faXmark} /> : ''}
+          <span>{status.error}</span>
+        </div>
         <ul className="w-[80vw] p-4 space-y-4 my-4">
           {content}
         </ul>
@@ -46,6 +54,10 @@ BookList.propTypes = {
     chapter: PropTypes.string,
   })),
   filtered: PropTypes.bool.isRequired,
+  status: PropTypes.objectOf(PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default BookList;

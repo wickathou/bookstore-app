@@ -59,19 +59,19 @@ function BookItem({ book }) {
   );
 }
 
-// BookItem.defaultProps = {
-//   book: {},
-// };
+BookItem.defaultProps = {
+  book: {},
+};
 
-// BookItem.propTypes = {
-//   book: PropTypes.objectOf(PropTypes.shape({
-//     item_id: PropTypes.string.isRequired,
-//     category: PropTypes.string.isRequired,
-//     title: PropTypes.string.isRequired,
-//     author: PropTypes.string.isRequired,
-//     completion: PropTypes.number.isRequired,
-//     chapter: PropTypes.string.isRequired,
-//   })),
-// };
+BookItem.propTypes = {
+  book: PropTypes.objectOf(PropTypes.shape({
+    item_id: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    completion: PropTypes.number.isRequired,
+    chapter: PropTypes.string.isRequired,
+  })),
+};
 
 export default BookItem;

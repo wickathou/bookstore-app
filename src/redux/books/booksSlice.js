@@ -4,57 +4,38 @@ import { v4 as uuidv4 } from 'uuid';
 const booksAPI = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/VUqoXEBLxjrzkWMVNCqp/books/';
 
 export const addData = createAsyncThunk('books/add', async (bookData) => {
-  console.log(bookData);
-  const {
-    item_id, title, author, category,
-  } = bookData;
-  try {
-    const res = await fetch(booksAPI, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        item_id,
-        title,
-        author,
-        category,
-      }),
-    });
-    if (await !res.ok) {
-      throw new Error(`Server returned status code ${res.status}`);
-    }
-    // const data = await res.json();
-    return res;
-  } catch (error) {
-    throw error;
+  const { title, author, category } = bookData;
+  const itemId = bookData.item_id;
+  const res = await fetch(booksAPI, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      item_id: itemId,
+      title,
+      author,
+      category,
+    }),
+  });
+  if (await !res.ok) {
+    throw new Error(`Server returned status code ${res.status}`);
   }
+  return res;
 });
 
 export const delData = createAsyncThunk('books/del', async (id) => {
-  console.log(`Deleting record ${id}`);
-  try {
-    const res = await fetch(booksAPI + id, {
-      method: 'DELETE',
-    });
-    if (await !res.ok || (/Weird/).test(await res.text())) {
-      console.log(res.ok);
-      console.log('Error FOUND');
-      console.log(res.statusText);
-      console.log(res);
-      throw new Error(`Refresh the page, the operation failed`);
-    }
-    console.log('Deleted');
-    return res;
-  } catch (error) {
-    console.log('delData ERROR found');
-    throw error;
+  const res = await fetch(booksAPI + id, {
+    method: 'DELETE',
+  });
+  if (await !res.ok || (/Weird/).test(await res.text())) {
+    throw new Error('Refresh the page, the operation failed');
   }
+  return res;
 });
 
 export const getData = createAsyncThunk('books/get', async () => {
   try {
-    console.log('data.result');
     const res = await fetch(booksAPI);
     const data = await res.json();
     return data;
@@ -76,11 +57,10 @@ const initialState = {
 };
 
 const bookFormater = (element) => {
-  const {
-    title, author, item_id, category,
-  } = element;
+  const { title, author, category } = element;
+  const itemId = element.item_id;
   const newBook = {
-    item_id: item_id || uuidv4(),
+    item_id: itemId || uuidv4(),
     category: category || 'Uncategorized',
     title,
     author,
@@ -93,24 +73,27 @@ const bookFormater = (element) => {
 const returnStatus = (type, state, action) => {
   switch (type) {
     case 'pending':
-      return {...state, status: {...state.status, loading:true, error: ''}}
+      return { ...state, status: { ...state.status, loading: true, error: '' } };
     case 'fulfilled':
-      return {...state, status: {...state.status, loading:false, error: ''}}
+      return { ...state, status: { ...state.status, loading: false, error: '' } };
     case 'rejected':
-      return {...state, status: {...state.status, loading:false, error: action.error.message || 'The operation has failed'}}
+      return { ...state, status: { ...state.status, loading: false, error: action.error.message || 'The operation has failed' } };
     default:
       break;
   }
-}
+  return { ...state };
+};
 
 const booksSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    addBook: (state, action) => ({ ...state, bookList: [...state.bookList, bookFormater(action.payload)] }),
+    addBook: (state, action) => {
+      const bookData = action.payload;
+      return { ...state, bookList: [...state.bookList, bookFormater(bookData)] };
+    },
     removeBook: (state, action) => {
       const itemId = action.payload;
-      console.log(itemId);
       return { ...state, bookList: state.bookList.filter((item) => item.item_id !== itemId) };
     },
     filterBooks: (state, { payload }) => {
@@ -133,52 +116,32 @@ const booksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getData.pending, (state) => {
-        return returnStatus('pending', state)
-      })
+      .addCase(getData.pending, (state) => returnStatus('pending', state))
       .addCase(getData.fulfilled, (state, action) => {
         const bookList = action.payload;
         const bookArr = Object.entries(bookList);
         const newBooks = bookArr.map((book) => {
-          const item_id = book[0];
+          const itemId = book[0];
           const { author, category, title } = book[1][0];
           const bookObj = {
-            item_id,
+            item_id: itemId,
             author,
             category,
             title,
           };
           return bookFormater(bookObj);
         });
-        return { ...state, bookList: [...state.bookList, ...newBooks], status: {...state.status, loading:false, error: ''}};
+        return { ...state, bookList: [...state.bookList, ...newBooks], status: { ...state.status, loading: false, error: '' } };
       })
-      .addCase(getData.rejected, (state, action) => {
-        return returnStatus('rejected', state, action)
-      })
+      .addCase(getData.rejected, (state, action) => returnStatus('rejected', state, action))
 
-      .addCase(addData.pending, (state) => {
-        return returnStatus('pending', state)
+      .addCase(addData.pending, (state) => returnStatus('pending', state))
+      .addCase(addData.fulfilled, (state) => returnStatus('fulfilled', state))
+      .addCase(addData.rejected, (state, action) => returnStatus('rejected', state, action))
 
-      })
-      .addCase(addData.fulfilled, (state) => {
-        return returnStatus('fulfilled', state)
-      })
-      .addCase(addData.rejected, (state, action) => {
-        return returnStatus('rejected', state, action)
-      })
-
-      .addCase(delData.pending, (state) => {
-        return returnStatus('pending', state)
-
-      })
-      .addCase(delData.fulfilled, (state) => {
-        return returnStatus('fulfilled', state)
-
-
-      })
-      .addCase(delData.rejected, (state, action) => {
-        return returnStatus('rejected', state, action)
-      });
+      .addCase(delData.pending, (state) => returnStatus('pending', state))
+      .addCase(delData.fulfilled, (state) => returnStatus('fulfilled', state))
+      .addCase(delData.rejected, (state, action) => returnStatus('rejected', state, action));
   },
 });
 
@@ -193,7 +156,6 @@ export default booksSlice.reducer;
 export const asyncMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'books/removeBook':
-      console.log(action.payload);
       store.dispatch(delData(action.payload));
       break;
     case 'books/addBook':
