@@ -21,7 +21,7 @@ function BookList({ books, filtered, status }) {
     <>
       <main className="flex flex-col items-center space-y-2">
         {filtered ? <Button title="Clear all filters" onDispatch={() => dispatch(clearFilters())} /> : ''}
-        {status.loading ? <FontAwesomeIcon icon={faSpinner} /> : 'test'}
+        {status.loading ? <div className='m-4 animate-spin'><FontAwesomeIcon icon={faSpinner} /></div> : ''}
         <div className='space-x-4'>{status.error.trim() ? <FontAwesomeIcon icon={faXmark} /> : ''}<span>{status.error}</span></div>
         <ul className="w-[80vw] p-4 space-y-4 my-4">
           {content}
