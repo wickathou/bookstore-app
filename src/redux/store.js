@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import bookReducer from './books/booksSlice';
+import bookReducer, { asyncMiddleware } from './books/booksSlice';
 import categoriesReducer from './categories/categoriesSlice';
 
 const store = configureStore({
@@ -7,6 +7,7 @@ const store = configureStore({
     books: bookReducer,
     categories: categoriesReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(asyncMiddleware),
 });
 
 export default store;

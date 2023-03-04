@@ -21,7 +21,7 @@ function BookItem({ book }) {
         <div className="flex justify-between space-x-4">
           <h5>Comments</h5>
           <span>|</span>
-          <button type="button" href="#" onClick={() => dispatch(removeBook(book.id))}><h5 className="text-link">Remove</h5></button>
+          <button type="button" href="#" onClick={() => dispatch(removeBook(book.item_id))}><h5 className="text-link">Remove</h5></button>
           <span>|</span>
           <h5>Edit</h5>
         </div>
@@ -65,9 +65,8 @@ BookItem.defaultProps = {
 
 BookItem.propTypes = {
   book: PropTypes.objectOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    item_id: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    country: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
     completion: PropTypes.number.isRequired,

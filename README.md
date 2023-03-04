@@ -55,9 +55,6 @@ Clone this repository to your desired folder:
 To run the project, use the command
 `npm run dev`
 
-To run the tests, use the command
-`npm run test`
-
 ## 👤 Author <a name="author"></a>
 
 **Javier Hernandez**
@@ -71,6 +68,8 @@ To run the tests, use the command
 - [Done] **[Visual interface for book lists]**
 - [Done] **[Functionality to add new books, delete and filter]**
 - [Done] **[Add routes]**
+- [Done] **[Input validation for new book entries]**
+- [Done] **[API calls to get, add and remove books from DB]**
 
 ## 🔭 Future Features <a name="future-features"></a>
 

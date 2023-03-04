@@ -8,16 +8,21 @@ function AddBook() {
   const [message, setMessage] = useState('');
   const [titleInput, setTitleInput] = useState('');
   const [authorInput, setAuthorInput] = useState('');
+  const [categoryInput, setCategoryInput] = useState('');
   const updateTitle = (e) => {
     setTitleInput(e.target.value);
   };
   const updateAuthor = (e) => {
     setAuthorInput(e.target.value);
   };
+  const updateCategory = (e) => {
+    setCategoryInput(e.target.value);
+  };
 
   const newBook = {
     title: titleInput,
     author: authorInput,
+    category: categoryInput,
   };
   return (
     <footer className="flex justify-center items-center">
@@ -26,8 +31,9 @@ function AddBook() {
           ADD NEW BOOK
         </h2>
         <div className="flex justify-between items-center">
-          <input type="text" placeholder="Book title" onChange={updateTitle} className="w-1/2 h-10 pt-2 pb-1.5 px-4" value={titleInput} />
+          <input type="text" placeholder="Book title" onChange={updateTitle} className="w-1/4 h-10 pt-2 pb-1.5 px-4" value={titleInput} />
           <input type="text" placeholder="Book author" onChange={updateAuthor} className="w-1/4 h-10 pt-2 pb-1.5 px-4" value={authorInput} />
+          <input type="text" placeholder="Book category" onChange={updateCategory} className="w-1/4 h-10 pt-2 pb-1.5 px-4" value={categoryInput} />
           <div>
             <Button
               title="ADD BOOK"
@@ -36,9 +42,10 @@ function AddBook() {
                   setMessage('');
                   setTitleInput('');
                   setAuthorInput('');
+                  setCategoryInput('');
                   dispatch(addBook(newBook));
                 } else {
-                  setMessage('Add title and author');
+                  setMessage('Fill all info');
                 }
               }}
             />
